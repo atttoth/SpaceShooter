@@ -9,6 +9,7 @@
     <script>
       let app;
       let player;
+      let enemy;
       let keys = {};
       let keysDiv;
 
@@ -24,28 +25,25 @@
         player.x = 50;
         player.y = app.view.height / 2;
 
-        app.stage.addChild(player);
+        enemy = new PIXI.Sprite.from("assets/enemyShip.png");
+        enemy.anchor.set(0.5);
+        enemy.x = app.view.width - 50;
+        enemy.y = app.view.height / 2;
+
+        app.stage.addChild(player, enemy);
 
      /*    let elapsed = 0.0;
       app.ticker.add((delta) => {
         elapsed += delta;
         player.x = 100.0 + Math.cos(elapsed/50.0) * 100.0;
       }); */
-        window.addEventListener("keydown", keyDown);
-        window.addEventListener("keyup", keyUp);
+        window.addEventListener("keydown", (e) => keys[e.keyCode] = true);
+        window.addEventListener("keyup", (e) => keys[e.keyCode] = false);
         
         app.ticker.add(gameLoop)
 
         keysDiv = document.querySelector("#keys")
       };
-
-      const keyDown = (e) => {
-        keys[e.keyCode] = true;
-      }
-
-      const keyUp = (e) => {
-        keys[e.keyCode] = false;
-      }
 
       const gameLoop = () => {
         if(keys["87"]) {
