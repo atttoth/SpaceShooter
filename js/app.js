@@ -1,9 +1,10 @@
 
 let app;
 let player;
-let enemy;
+const enemies = [];
 const keys = {};
 let keysDiv;
+let seconds = 0;
 
 window.onload = function () {
   app = new PIXI.Application({
@@ -42,17 +43,22 @@ const spawnPlayer = () => {
 };
 
 const spawnEnemy = () => {
-  enemy = new SpaceShip(app.view.width - 50, app.view.height / 2, app.loader.resources.enemy.texture, 1, 4);
+  const enemy = new SpaceShip(app.view.width - 50, app.view.height / 2, app.loader.resources.enemy.texture, 1, 4);
+  enemies.push(enemy);
   app.stage.addChild(enemy);
 };
 
 const loadingDone = () => {
   spawnPlayer();
-  spawnEnemy();
   app.ticker.add(gameLoop);
 };
 
-const gameLoop = () => {
+const gameLoop = (delta) => {
+  seconds += (1 / 60) * delta;
+  if (seconds >= 2) {
+    seconds = 0;
+    spawnEnemy();
+  }
   if (keys['87']) {
     player.y -= 5;
   }
