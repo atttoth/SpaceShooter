@@ -5,6 +5,7 @@ const enemies = [];
 const lasers = [];
 const keys = {};
 let keysDiv;
+let seconds = 0;
 
 window.onload = function () {
   app = new PIXI.Application({
@@ -17,6 +18,7 @@ window.onload = function () {
   app.loader.baseUrl = 'sprites';
   app.loader
     .add('enemy', '../assets/enemyShip.png')
+    .add('enemyLaser', '../assets/enemyLaser.png')
     .add('player', '../assets/playerShip.png')
     .add('playerLaser', '../assets/playerLaser.png');
   app.loader.onComplete.add(loadingDone);
@@ -36,17 +38,21 @@ const spawnEnemy = () => {
   enemies.push(enemy);
 };
 
-const laserUpdate = (lasers) => {
-  lasers.forEach(l => {
-    l.x += l.speed;
-    if (l.x > app.view.width * 1.1) {
-      lasers.splice(l);
-    }
+const enemyLaser = () => {
+  enemies.forEach(e => {
+    const laser = new Laser(false, e.x - 50, e.y, app.loader.resources.enemyLaser.texture, 9);
+    lasers.push(laser);
   });
 };
 
+const laserUpdate = () => {
+  lasers.forEach(l => l.update());
+};
+
 const detectInput = (delta) => {
-  player.coolDown += (1 / 60) * delta;
+  if (player.coolDown < 1.5) {
+    player.coolDown += (1 / 60) * delta;
+  }
   if (keys['87']) {
     player.y -= player.speed;
   }
@@ -59,9 +65,9 @@ const detectInput = (delta) => {
   if (keys['68']) {
     player.x += player.speed;
   }
-  if (keys['32'] && player.coolDown >= 1.5 && lasers.length === 0) {
-    const laser1 = new Laser(player.x + 50, player.y - 45, app.loader.resources.playerLaser.texture, 7);
-    const laser2 = new Laser(player.x + 50, player.y + 45, app.loader.resources.playerLaser.texture, 7);
+  if (keys['32'] && player.coolDown >= 1.5) {
+    const laser1 = new Laser(true, player.x + 50, player.y - 45, app.loader.resources.playerLaser.texture, 7);
+    const laser2 = new Laser(true, player.x + 50, player.y + 45, app.loader.resources.playerLaser.texture, 7);
     lasers.push(laser1, laser2);
     player.coolDown = 0;
   }
@@ -73,7 +79,15 @@ const loadingDone = () => {
 };
 
 const gameLoop = (delta) => {
-  spawnEnemy();
+  seconds += (1 / 60) * delta;
+  if (seconds >= 2) {
+    spawnEnemy();
+  }
+  if (seconds >= 3) {
+    seconds = 0;
+    enemyLaser();
+  }
+
   detectInput(delta);
-  laserUpdate(lasers);
+  laserUpdate();
 };
