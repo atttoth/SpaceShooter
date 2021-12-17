@@ -6,61 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Space Shooter game</title>
     <script src="js/pixi.min.js"></script>
-    <script>
-      let app;
-      let player;
-      let enemy;
-      let keys = {};
-      let keysDiv;
-
-      window.onload = function () {
-        app = new PIXI.Application({
-          width: 800,
-          height: 600
-        });
-        document.body.appendChild(app.view);
-
-        player = new PIXI.Sprite.from("assets/playerShip.png");
-        player.anchor.set(0.5);
-        player.x = 50;
-        player.y = app.view.height / 2;
-
-        enemy = new PIXI.Sprite.from("assets/enemyShip.png");
-        enemy.anchor.set(0.5);
-        enemy.x = app.view.width - 50;
-        enemy.y = app.view.height / 2;
-
-        app.stage.addChild(player, enemy);
-
-     /*    let elapsed = 0.0;
-      app.ticker.add((delta) => {
-        elapsed += delta;
-        player.x = 100.0 + Math.cos(elapsed/50.0) * 100.0;
-      }); */
-        window.addEventListener("keydown", (e) => keys[e.keyCode] = true);
-        window.addEventListener("keyup", (e) => keys[e.keyCode] = false);
-        
-        app.ticker.add(gameLoop)
-
-        keysDiv = document.querySelector("#keys")
-      };
-
-      const gameLoop = () => {
-        if(keys["87"]) {
-          player.y -= 5;
-        }
-        if(keys["83"]) {
-          player.y += 5;
-        }
-        if(keys["65"]) {
-          player.x -= 5;
-        }
-        if(keys["68"]) {
-          player.x += 5;
-        }
-      }
-
-    </script>
+    <script src="js/app.js"></script>
   </head>
   <body>
     <div id="keys"></div>
