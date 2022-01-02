@@ -1,7 +1,88 @@
-body, html {
-  margin: 0;
-  padding: 0;
+*, html {
+  margin: auto;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body {
+  width: 800px;
+  height: 600px;
+  background-color: rgb(24, 17, 92);
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+#splash {
+  opacity: 1;
+  transition: opacity 0.5s;
+  background-color: black;
   width: 100%;
   height: 100%;
-  background-color: #12379c;
-  text-align: center; }
+  z-index: 200;
+}
+
+#splash.fade {
+  opacity: 0;
+  z-index: -10;
+  transition: all 0.8s;
+}
+
+#helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#splash img {
+  vertical-align: middle;
+}
+
+#menu {
+  position: absolute;
+  width: 800px;
+  height: 600px;
+}
+
+#menu-background {
+  width: 800px;
+  height: 600px;
+  position: absolute;
+  z-index: -100;
+}
+
+  #menu-content {
+    position:absolute;
+    width: 800px;
+    height: 600px;
+    z-index: 100;
+    white-space: nowrap;
+    overflow: hidden
+  }
+
+  #menu-content img {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+  #menu-content button {
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    border-radius: 15px;
+    cursor: pointer;
+    display: block;
+    width: 200px;
+    height: 50px;
+    font-size:2em;
+    margin-bottom: 20px;
+
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+#menu-content button:hover {
+  color: #0851be
+}

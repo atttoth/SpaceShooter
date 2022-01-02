@@ -6,12 +6,28 @@
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <title>Space Shooter game</title>
     <link rel="stylesheet" href="app.css">
-    <script src="js/pixi.min.js"></script>
+    <script src="./node_modules/pixi.js/dist/browser/pixi.min.js"></script>
+    <script src="js/bump.js"></script>
     <script src="js/app.js"></script>
     <script src="js/spaceShip.js"></script>
-    <script src="js/laser.js"></script>
+    <script src="js/rocket.js"></script>
+    <script src="js/particle.js"></script>
   </head>
   <body>
-    <div id="canvas"></div>
+    <div id="splash" style="display: block;">
+      <span id="helper"></span>
+      <img src="../assets/splash.png" alt="">
+    </div>
+    <div id="menu" style="display: none;">
+      <div id="menu-content">
+        <img src="../assets/logo.png" alt="">
+      <button href="#" onclick="startGame()">GAME1</button>
+      <button href="#" onclick="startGame()">GAME2</button>
+      <button href="#" onclick="startGame()">GAME3</button>
+      <button herf="#" onclick="exitGame()">EXIT</button>
+      </div>
+      <canvas id="menu-background"></canvas>
+    </div>
+      <canvas id="game" style="display: none;"></canvas>
   </body>
 </html>

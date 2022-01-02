@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/atttoth/SpaceShooter/issues"
   },
-  "homepage": "https://github.com/atttoth/SpaceShooter#readme"
+  "homepage": "https://github.com/atttoth/SpaceShooter#readme",
+  "dependencies": {
+    "pixi.js": "^6.2.0"
+  }
 }

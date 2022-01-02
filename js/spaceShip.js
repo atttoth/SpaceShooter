@@ -1,32 +1,27 @@
 class SpaceShip extends PIXI.Sprite {
-  constructor (x, y, texture, hp, speed, coolDown, timeSinceLastDirectionChange, direction) {
+  constructor (x, y, texture, hp, speed, isKamikaze) {
     super(texture);
     this.anchor.set(0.5);
     this.x = x;
     this.y = y;
     this.hp = hp;
     this.speed = speed;
-    this.coolDown = coolDown;
-    this.timeSinceLastDirectionChange = timeSinceLastDirectionChange;
-    this.direction = direction;
-    app.stage.addChild(this);
+    this.coolDown = 0;
+    this.movementTime = 0;
+    this.isKamikaze = isKamikaze;
+    this.deadSince = 0;
   }
 
-  update (delta) {
-    this.timeSinceLastDirectionChange += delta;
-    if (this.direction % 2 === 0) {
+  update () {
+    if (this.x > w / 3) {
       this.x -= this.speed;
-      this.y -= this.speed;
+      this.y += Math.sin(this.movementTime) * 5;
     } else {
       this.x -= this.speed;
-      this.y += this.speed;
     }
-    if (this.timeSinceLastDirectionChange >= Math.ceil(Math.random() * (300 - 150) + 150)) {
-      this.timeSinceLastDirectionChange = 0;
-      this.direction = Math.ceil(Math.random() * 2);
-    }
-    if (this.x < app.view.width - app.view.width * 1.1) {
-      enemies.splice(this, 1);
+    if (this.isKamikaze && this.x <= w / 1.5) {
+      this.speed = 7;
+      this.x -= this.speed;
     }
   }
 }
