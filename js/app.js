@@ -1,5 +1,5 @@
 let app;
-let stage;
+const stage = new PIXI.Container();
 let player;
 let seconds = 0;
 const loader = new PIXI.Loader();
@@ -35,7 +35,7 @@ const playerContainer = new PIXI.Container();
 const backgroundContainer = new PIXI.Container();
 const gameObjectContainer = new PIXI.Container();
 const explosionContainer = new PIXI.Container();
-const asteroidContainer = new PIXI.Container();
+const menuBgContainer = new PIXI.Container();
 const particleContainer = new PIXI.ParticleContainer(200, {
   position: true
 });
@@ -58,6 +58,7 @@ window.onload = () => {
 
 const imageLoader = () => {
   loader
+    .add('menuBg', '../assets/menuBg.png')
     .add('bg1', '../assets/bg1.png')
     .add('bg2', '../assets/bg2.png')
     .add('bg3', '../assets/bg3.png')
@@ -73,6 +74,7 @@ const imageLoader = () => {
     console.log('Cannot find image');
   });
   loader.onComplete.add(() => {
+    menuBgContainer.addChild(new PIXI.Sprite(loader.resources.menuBg.texture));
     fillArrayWithTexture(asteroidTextures, 32, 'a');
     fillArrayWithTexture(explosionTextures, 34, 'e');
     bgBack = createBackground(loader.resources.bg1.texture);
@@ -93,7 +95,6 @@ const initializeApp = (selectedDiv) => {
 
 const setupGame = () => {
   toggleScreen('splash', false);
-  stage = new PIXI.Container();
   stage.addChild(backgroundContainer, playerContainer, gameObjectContainer, particleContainer, explosionContainer);
   player = new SpaceShip(50, h / 2, loader.resources.player.texture, 1, 5, false);
   playerContainer.addChild(player);
@@ -109,7 +110,7 @@ const startGame = () => {
     setupGame();
   }
   initializeApp('game');
-  emptyContainer(asteroidContainer);
+  emptyContainer(menuBgContainer);
   isGameRunning = true;
   toggleScreen('menu', false);
   toggleScreen('game', true);
@@ -117,6 +118,7 @@ const startGame = () => {
 
 const stopGame = () => {
   isGameRunning = false;
+  menuBgContainer.addChild(new PIXI.Sprite(loader.resources.menuBg.texture));
   initializeApp('menu-background');
   emptyContainer(gameObjectContainer);
   emptyContainer(explosionContainer);
@@ -283,13 +285,13 @@ const animateAsteroid = () => {
   asteroid.animationSpeed = 0.3;
   asteroid.loop = true;
   asteroid.scale.set(1, 1);
-  asteroidContainer.addChild(asteroid);
+  menuBgContainer.addChild(asteroid);
   asteroid.play();
   asteroid.onFrameChange = () => {
     asteroid.x += 10;
     asteroid.y += 2;
     if (isObjectOutOfScreen(asteroid)) {
-      asteroidContainer.removeChild(asteroid);
+      menuBgContainer.removeChild(asteroid);
     }
   };
 };
@@ -343,7 +345,7 @@ const checkCollision = () => {
 const gameLoop = (delta) => {
   seconds += (1 / 60) * delta;
   if (isTextureLoaded && !isGameRunning) {
-    app.render(asteroidContainer);
+    app.render(menuBgContainer);
     if (seconds >= 1.8) {
       animateAsteroid();
       seconds = 0;
