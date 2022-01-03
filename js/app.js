@@ -210,9 +210,7 @@ const playerUpdate = () => {
     player.x += player.speed;
   }
   if (keys['32'] && player.coolDown >= 2.1) { // SPACE
-    const rocket1 = new Rocket(true, player.x + 50, player.y - 30, loader.resources.playerRocket.texture, 7);
-    const rocket2 = new Rocket(true, player.x + 50, player.y + 30, loader.resources.playerRocket.texture, 7);
-    player.coolDown = 0;
+    createRocket(player);
   }
   if (player.deadSince >= 2.5) {
     stopGame();
@@ -229,8 +227,7 @@ const enemyUpdate = (delta) => {
     e.movementTime += 0.08;
     e.coolDown += (1 / 60) * delta;
     if (e.coolDown >= 1.5 && e.speed <= 1) {
-      const rocket = new Rocket(false, e.x - 50, e.y, loader.resources.enemyRocket.texture, 9, 0, 0);
-      e.coolDown = 0;
+      createRocket(e);
     }
   });
 };
@@ -253,6 +250,16 @@ const spawnEnemy = () => {
     loader.resources.enemy.texture, 1, 1, Math.random() < 0.5);
   enemies.push(enemy);
   gameObjectContainer.addChild(enemy);
+};
+
+const createRocket = (ship) => {
+  const isPlayerRocket = ship.speed !== 1;
+  const x = isPlayerRocket ? ship.x + 50 : ship.x - 50;
+  const y = ship.y;
+  const texture = isPlayerRocket ? loader.resources.playerRocket.texture : loader.resources.enemyRocket.texture;
+  const speed = isPlayerRocket ? 7 : 9;
+  const rocket = new Rocket(isPlayerRocket, x, y, texture, speed);
+  ship.coolDown = 0;
 };
 
 const createParticles = (ship) => {
